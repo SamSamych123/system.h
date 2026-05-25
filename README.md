@@ -1,24 +1,143 @@
 # system.h
-system.h is a library for C and C++ that should solve the incompatibility problems of different operating systems.
+# System.h — automated library management system for system queries
 
-This library should solve the problem of operating system diversity.
-It provides several functions to simplify working with the OS.
+**System.h** is a simple and uniform interface for creating architectures, operating system, computer, applications, tap reports, birthday party input/output, and steam, as well as executing commands. The library is written in C and is compatible with C++.
 
-Main Library Functions:
-1. Arch(void) - Architecture;
-2. Type OS (void) - Type operation system
-3. OS(void) - Operation system;
-4. Comp(void) - Compiler;
-5. Delay(second for "double") - Waiting time in seconds;
-6. Command(command for string) - Executing commands from a string;
-7. Msg print(level for int, msg for string, action for int) - Printing text from a string with different levels;
-8. Init CpuInfo(void) - Saving processor information to a file;
-9. Clear screen(void) - Clearing the terminal of strings and characters;
-10. Conf user(msg for string, choice for int) - The process of interviewing the user through a Yes/No question and answer options;
-11. Name user(save_name to string) - Entering a user name;
-12. Password user(save_password to string) - Entering a user password;
-13. Verification name user(name to string) - User Name verification;
-14. Verification password user(password to string) - User password verification;
-15. Print With Delay(text for string, sec for int) - Text output character-by-character and with a delay.
+# System.h - is a cross-platform C library for system calls
 
-Unfortunately, I haven't finished doing it yet. README.md, but I'll finish it.
+**System.h** provides a simple and consistent interface for defining architecture, operating system, compiler, delays, screen cleaning, name and password entry/verification, and command execution. The library is written in pure C and is compatible with C++.
+
+## License
+LGPL v2.1. Details in the LICENSE file.
+
+## Features
+- Architecture definition (x86_64, i386, ARM, ARM64, RISC-V 32/64/128)
+- OS type definition (Windows, Unix, FreeBSD, ToyOS)
+- Definition of a specific OS (Windows, Linux, Apple, Android, UNIX, FreeBSD, ToyOS)
+- Definition of the compiler (GCC, Clang, MSVC)
+- Delay in seconds (Windows, Unix and fallback support)
+- Character-by-character delayed printing
+- Execution of system commands
+- Universal logging with levels (errors, warnings, information, commands)
+- Screen clearing (cls/clear/ANSI)
+- Confirmation request with configurable default value (Y/n or y/N)
+- Name input and verification (max. 30 characters)
+- Password entry and verification (max. 100 characters)
+
+## Installation and assembly
+Copy the `system.c` and `system.h` to your project. Compile along with the main code:
+``bash
+gcc -c system.c -o system.o
+gcc main.c system.o -o myapp
+```
+
+Or include 'system.c` directly in the build.
+
+## Usage example
+
+```
+#include "system.h"
+#include <stdio.h>
+
+int main() {
+printf("Architecture: %d\n", arch());
+printf("OS type: %d\n", type_os());
+printf("OS: %d\n", os());
+printf("Compiler: %d\n", comp());
+
+    if (conf_user("Continue?", 0)) {
+        char name[31];
+        name_user(name);
+        printf("Hello, %s!\n", name);
+    }
+
+    clear_screen();
+    print_with_delay("Hello, world!\n", 0.1);
+    return 0;
+}
+```
+
+## Compilation Notes
+
+Warnings may appear when using the `-Wall -Wextra` flags.:
+
+- `unused variable 'millisecond_w" in `delay` — the variable is not used on some platforms, this is normal.
+- `control reaches end of non-void function` in `conf_user` — a `return 0` stub has been added to satisfy the compiler.
+
+You can ignore these warnings or suppress them using `-Wno-unused-variable-Wno-return-type'.
+
+## Porting
+
+The library was tested on Linux (GCC, Clang) and should work on Windows (MinGW, MSVC), macOS, FreeBSD, Android. To add support for your OS, use macros at the beginning of `system.c` and `system.h`.
+
+## Author
+
+Sam Samych
+
+## Thanks
+
+Thanks to everyone who tested and helped with debugging.# System.h is a cross-platform C library for system calls
+
+**System.h** provides a simple and consistent interface for defining architecture, operating system, compiler, delays, screen cleaning, name and password entry/verification, and command execution. The library is written in pure C and is compatible with C++.
+
+## License
+LGPL v2.1. Details in the LICENSE file.
+
+## Features
+- Architecture definition (x86_64, i386, ARM, ARM64, RISC-V 32/64/128)
+- OS type definition (Windows, Unix, FreeBSD, ToyOS)
+- Definition of a specific OS (Windows, Linux, Apple, Android, UNIX, FreeBSD, ToyOS)
+- Definition of the compiler (GCC, Clang, MSVC)
+- Delay in seconds (Windows, Unix and fallback support)
+- Character-by-character delayed printing
+- Execution of system commands
+- Universal logging with levels (errors, warnings, information, commands)
+- Screen clearing (cls/clear/ANSI)
+- Confirmation request with configurable default value (Y/n or y/N)
+- Name input and verification (max. 30 characters)
+- Password entry and verification (max. 100 characters)
+
+## Installation and assembly
+Copy the `system.c` and `system.h` to your project. Compile along with the main code:
+``bash
+gcc -c system.c -o system.o
+gcc main.c system.o -o myapp
+```
+
+Or include 'system.c` directly in the build.
+
+## Usage example
+
+```
+#include "system.h"
+#include <stdio.h>
+
+int main() {
+printf("Architecture: %d\n", arch());
+printf("OS type: %d\n", type_os());
+printf("OS: %d\n", os());
+printf("Compiler: %d\n", comp());
+
+    if (conf_user("Continue?", 0)) {
+        char name[31];
+        name_user(name);
+        printf("Hello, %s!\n", name);
+    }
+
+    clear_screen();
+    print_with_delay("Hello, world!\n", 0.1);
+    return 0;
+}
+```
+
+## Porting
+
+The library was tested on Linux (GCC, Clang) and should work on Windows (MinGW, MSVC), macOS, FreeBSD, Android. To add support for your OS, use macros at the beginning of `system.c` and `system.h`.
+
+## Author
+
+Sam Samych
+
+## Thanks
+
+Thanks to everyone who tested and helped with debugging.
