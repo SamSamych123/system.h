@@ -25,7 +25,7 @@ LGPL v2.1. Details in the LICENSE file.
 
 ## Installation and assembly
 Copy the `system.c` and `system.h` to your project. Compile along with the main code:
-``bash
+```bash
 gcc -c system.c -o system.o
 gcc main.c system.o -o myapp
 ```
@@ -55,15 +55,6 @@ printf("Compiler: %d\n", comp());
     return 0;
 }
 ```
-
-## Compilation Notes
-
-Warnings may appear when using the `-Wall -Wextra` flags.:
-
-- `unused variable 'millisecond_w" in `delay` — the variable is not used on some platforms, this is normal.
-- `control reaches end of non-void function` in `conf_user` — a `return 0` stub has been added to satisfy the compiler.
-
-You can ignore these warnings or suppress them using `-Wno-unused-variable-Wno-return-type'.
 
 ## Porting
 
