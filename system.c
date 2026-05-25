@@ -57,7 +57,7 @@ int type_os(void) {
 }
 
 
-/*OS - is a function to find type OS
+/*OS - is a function to find OS
  *All OS: Windows systems = 0, Linux systems = 1, Apple systems = 2, Android systems = 4, UNIX base systems = 3, FreeBSD systems = 5, ToyOS = 6, other = 255
  */
 int os(void) {
