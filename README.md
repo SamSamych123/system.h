@@ -1,4 +1,3 @@
-# system.h
 # System.h — automated library management system for system queries
 
 **System.h** is a simple and uniform interface for creating architectures, operating system, computer, applications, tap reports, birthday party input/output, and steam, as well as executing commands. The library is written in C and is compatible with C++.
