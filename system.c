@@ -8,6 +8,9 @@
 extern "C" {
 #endif
 
+//unsigned char inited_cpuinfo = 0;
+//unsigned char error_out = 0;
+
 /*Arch - is a function to find architecture processor
  *All architectures: x86-64 = 0, i386 (x86) = 1, ARM = 2, ARM64 = 3, RISC V: 32 = 4, 64 = 5, 128 = 6, other = 255
  */
@@ -111,29 +114,48 @@ int comp(void) {
 }*/
 
 /*Delay - is a function to sleep programm*/
-void delay(double millisecond) {
-  double second_w = millisecond * 1000;
-  double second_u = millisecond * 1000000;
+void delay(double second) {
+  //if (type_os() == 0) {
   #if defined(_WIN32)
-    Sleep((DWORD)(second_w));
+    double millisecond_w = second * 1000;
+    Sleep((DWORD)(millisecond_w));
+  //}
+  //else if (type_os() == 1) {
   #elif defined(__linux__) || defined(__APPLE__) || defined(__unix__) || defined(__ANDROID__)
-    usleep((useconds_t)(second_u));
+    double microsecond_u = second * 1000000;
+    usleep((useconds_t)(microsecond_u));
+    /*struct timespec req = {1, 500000000}; // 1 сек + 500 млн нс = 1.5 сек
+    struct timespec rem;
+
+    if (nanosleep(&req, &rem) == -1) {
+      if (errno == EINTR) {
+        printf("Прервано сигналом, осталось %ld с %ld нс\n",
+             (long)rem.tv_sec, rem.tv_nsec);
+      } else {
+        perror("nanosleep");
+      }
+      return 1;
+    }*/
   //#elif defined(__SamOS__)
     //sleep(second);
+  //}
+  //else {
   #else
-    for (unsigned long int x = 0; x < (unsigned long int)second_u; x++) {
+    double microsecond_u = second * 1000000;
+    for (unsigned long int x = 0; x < (unsigned long int)microsecond_u; x++) {
       //Okak, okak-kak, and programming time in time table
-      sleep(1);
+      __asm__ volatile ("" : : : "memory");
     }
+  //}
   #endif
 }
 
 /*Print with delay - is a function for printing letters with a certain delay.*/
-void print_with_delay(const char *text, int sec) {
+void print_with_delay(const char *text, double sec) {
   unsigned int i = 0;
   for(i = 0; i < strlen(text); i++) {
     printf("%c", text[i]);
-    delay((double)sec);
+    delay(sec);
   }
 }
 
@@ -186,7 +208,7 @@ void msg_print(int level, const char *msg, int action) {
 }
 
 /*Init_cpuinfo - is a function to save information processor*/
-void init_cpuinfo(void) {
+/*void init_cpuinfo(void) {
   #if defined(_WIN32)
    #error "error: 'init_cpuinfo' is not working on Windows!"
   #elif defined(__linux__) || defined (__Unix__)
@@ -195,31 +217,41 @@ void init_cpuinfo(void) {
   #else
     #error "error: 'init_cpuinfo' is not working on your OS!"
   #endif
-}
+}*/
 
 /*Clear_screen - is a function to clear screen
  *Function cleared screen from terminal
  */
 void clear_screen(void) {
-  printf("\033[2J\033[H");
+  if (type_os() == 0) {
+    system("cls");
+  }
+  else if (type_os() == 1/* || type_os() == 2*/) {
+    system("clear");
+  }
+  else {
+    printf("\033[2J\033[H");
+  }
 }
 
 /*Conf_user - is a function to scan strean "stdin" to save user confirmation (y - yes/n - no)*/
+/*If choice = 0 and the user enters N or n, then 0 will be returned, otherwise 1 will be returned.
+If choice = 1 and the user enters Y or Y, then 1 will be returned, otherwise 0 will be returned.*/
 int conf_user(const char *msg, int choise) {
   char input_conf;
   if (choise == 0) {
     printf("%s [Y, n]: ", msg);
-    scanf("%1c", &input_conf);
+    scanf(" %1c", &input_conf);
     if (input_conf == 'n' || input_conf == 'N') {
-      return 1;
+      return 0;
     }
     else {
-      return 0;
+      return 1;
     }
   }
   if (choise == 1) {
     printf("%s [y, N]: ", msg);
-    scanf("%1c", &input_conf);
+    scanf(" %1c", &input_conf);
     if (input_conf == 'y' || input_conf == 'Y') {
       return 1;
     }
@@ -227,6 +259,7 @@ int conf_user(const char *msg, int choise) {
       return 0;
     }
   }
+  return 0;
 }
 
 
