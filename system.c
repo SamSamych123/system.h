@@ -349,7 +349,7 @@ uint8_t triple_print(const char *str1, const char *str2, const char *str3, FILE 
 
   memcpy(p, str1, sstr1);
   p += sstr1;
-  memcpy(p, str2, sstr3);
+  memcpy(p, str2, sstr2);
   p += sstr2;
   memcpy(p, str3, sstr3);
   p += sstr3;
@@ -583,7 +583,7 @@ uint8_t print_with_delay(const char *text, long double sec) {
  * If tou select level 3, the program will print a message about running command n and tun the command you entered.
  * Otherwisem the programm will print message and counte running.
  */
-uint8_t msg_print(int level, const char *msg, int action) {
+uint8_t msg_print(int8_t level, const char *msg, uint8_t action) {
   //char messeg[4096];
   if (level == CRITICAL_ERR) {
     //fprintf(stderr, "\033[91mCRITICAL ERROR: %s! Shutdown program...\033[0m\n", msg);
@@ -666,7 +666,7 @@ void clear_screen(void) {
  *
  * If choice = 0 and the user enters N or n, then 0 will be returned, otherwise 1 will be returned.
  * If choice = 1 and the user enters Y or Y, then 1 will be returned, otherwise 0 will be returned.*/
-uint8_t conf_user(const char *msg, int choise) {
+uint8_t conf_user(const char *msg, uint8_t choise) {
   char input_conf;
   if (choise == 0) {
     double_print(msg, " [Y, n]: ", stdout);
@@ -821,7 +821,7 @@ int8_t verification_password_user(const char *password, size_t size) {
  * This function don't have support formats (example - %s or %d). Please, unite strings for functions "strcat()" from string.h or "snprintf()" from stdio.h.
 */
 
-void print_in_color(const char *text, unsigned char color) {
+void print_in_color(const char *text, uint8_t color) {
   //char buffer[BUF_SIZE];
   #if TYPE_OS == 0
     HANDLE hC = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -960,7 +960,7 @@ void print_in_color(const char *text, unsigned char color) {
  * This function don't have support formats (example - %s or %d). Please, unite strings through functions "strcat()" from string.h or "snprintf()" from stdio.h.
 */
 
-void fprint_in_color(const char *text, unsigned char color, FILE *stream) {
+void fprint_in_color(const char *text, uint8_t color, FILE *stream) {
   #if TYPE_OS == 0
     HANDLE hC = GetStdHandle(STD_OUTPUT_HANDLE);
     switch (color) {
@@ -1108,7 +1108,7 @@ uint8_t urand8(void) {
   return (uint8_t)rand();
 }
 
-uint64_t urandom_in_range(int n, int m) {
+uint64_t urand_in_range(uint64_t n, uint64_t m) {
   if (seedd == 0) {
     srand(time(NULL));
     seedd = 1;
@@ -1149,12 +1149,13 @@ int8_t rand8(void) {
   return (uint8_t)rand();
 }
 
-int64_t random_in_range(int n, int m) {
+int64_t rand_in_range(int64_t n, int64_t m) {
   if (seedd == 0) {
     srand(time(NULL));
     seedd = 1;
   }
-  return n + rand() % (m - n + 1);
+  //return n + rand() % (m - n + 1);
+  return n + (((int64_t)rand() % (m - n + 1) + (m - n + 1)) % (m - n + 1));
 }
 
 /*uint8_t kbhit(void) {
