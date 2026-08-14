@@ -66,4 +66,4 @@ Sam Samych
 
 ## Thanks
 
-Thanks to everyone who tested and helped with debugging.# System.h is a cross-platform C library for system calls
+Thanks to everyone who tested and helped with debugging!
